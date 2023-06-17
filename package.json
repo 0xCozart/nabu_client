@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.15",
     "@composedb/client": "^0.4.4",
     "@lit-protocol/lit-node-client": "^2.2.23",
     "@t3-oss/env-nextjs": "^0.3.1",
@@ -20,6 +21,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@composedb/types": "^0.4.4",
     "@types/eslint": "^8.37.0",
     "@types/node": "^18.16.0",
     "@types/prettier": "^2.7.2",
