@@ -19,6 +19,7 @@ const link = new ApolloLink((operation) => {
       }
     )
   })
+  
 })
 
 // Use ApolloLink instance in ApolloClient config
