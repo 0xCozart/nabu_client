@@ -1,5 +1,3 @@
-import * as dotenv from "dotenv";
-
 import {
   ApolloClient,
   ApolloLink,
@@ -8,33 +6,36 @@ import {
 } from "@apollo/client";
 
 import { ComposeClient } from "@composedb/client";
-import { definition } from "../src/composites/daoProfile_runtime.js";
-
 import { DID } from "dids";
-import { Ed25519Provider } from 'key-did-provider-ed25519';
+import { Ed25519Provider } from "key-did-provider-ed25519";
 import { getResolver } from "key-did-resolver";
-// Path to compiled composite
-
-dotenv.config({ path: __dirname + "../.env" });
-
+import { definition } from "../src/composites/daoProfile_runtime.js";
+import constants from "../src/constants";
 
 const compose = new ComposeClient({
   ceramic: "http://localhost:7007",
   definition,
 });
 
-const authenticateDID = async (didKey: string) => {
-  const seed: string[] = process.env.ED25519_SEED?.split(",")
-  const arr = new Uint8Array(32).map((val,idx)=> {
-    val = seed[idx]
-  })
-  const provider = new Ed25519Provider()
-  const did = new DID({ resolver: getResolver() });
-  return await did.resolve(didKey);
+const seedToUint8Array = (seed: string) => {
+  const buffer = Buffer.from(seed, "hex");
+  return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
 };
 
-
-(async() => compose.setDID((await resolveDID(process.env.NEXT_PUBLIC_DID)).didDocument);)();
+const authenticateDID = async (seed: string) => {
+  try {
+    const Uint8ArraySeed = seedToUint8Array(seed);
+    const provider = new Ed25519Provider(Uint8ArraySeed);
+    const did = new DID({ provider, resolver: getResolver() });
+    await did.authenticate();
+    return did;
+  } catch (error) {
+    console.log(error);
+  }
+};
+void authenticateDID(constants.seed).then((did) => {
+  did && compose.setDID(did);
+});
 
 // Create custom ApolloLink using ComposeClient instance to execute operations
 const link = new ApolloLink((operation) => {
