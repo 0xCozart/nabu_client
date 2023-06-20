@@ -1,10 +1,10 @@
-import pkg from "@apollo/client";
 import { ComposeClient } from "@composedb/client";
 import { DID } from "dids";
 import { Ed25519Provider } from "key-did-provider-ed25519";
-import { getResolver } from "key-did-resolver";
-import { definition } from "../src/composites/daoProfile_runtime.js";
 import constants from "../src/constants/index.js";
+import { definition } from "../src/composites/daoProfile_runtime.js";
+import { getResolver } from "key-did-resolver";
+import pkg from "@apollo/client";
 const { ApolloClient, ApolloLink, InMemoryCache, Observable } = pkg;
 
 const compose = new ComposeClient({
@@ -29,9 +29,12 @@ const authenticateDID = async (seed: string) => {
   }
 };
 
-void authenticateDID(constants.seed).then((did) => {
-  did && compose.setDID(did);
-});
+//
+
+const did = await authenticateDID(constants.seed);
+if (did) {
+  compose.setDID(did);
+}
 
 // Create custom ApolloLink using ComposeClient instance to execute operations
 const link = new ApolloLink((operation) => {
@@ -50,5 +53,5 @@ const link = new ApolloLink((operation) => {
 
 // Use ApolloLink instance in ApolloClient config
 const client = new ApolloClient({ cache: new InMemoryCache(), link });
-console.log({ client });
+console.log({ client, did: compose.did });
 export default client;
