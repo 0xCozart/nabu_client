@@ -1,0 +1,437 @@
+type Query {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  dAOIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): DAOConnection
+  nabuProfileAlphaIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): NabuProfileAlphaConnection
+  daoProfileRelationIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): DaoProfileRelationConnection
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type CeramicAccount implements Node {
+  """Globally unique identifier of the account (DID string)"""
+  id: ID!
+
+  """
+  Whether the Ceramic instance is currently authenticated with this account or not
+  """
+  isViewer: Boolean!
+  daoList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): DAOConnection
+  nabuProfileAlpha: NabuProfileAlpha
+  daoProfileRelationList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): DaoProfileRelationConnection
+}
+
+"""A connection to a list of items."""
+type DAOConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [DAOEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type DAOEdge {
+  """The item at the end of the edge"""
+  node: DAO
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type DAO implements Node {
+  id: ID!
+  url: String
+  name: String!
+  chain: ChainAgnosticChainID!
+  roles: [String]
+  token: ChainAgnosticAccountID!
+  creator: CeramicAccount!
+  members(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+  ): DaoProfileRelationConnection!
+  createdAt: DateTime!
+  description: String!
+}
+
+"""A Chain Agnostic ChainId"""
+scalar ChainAgnosticChainID @specifiedBy(url: "https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md")
+
+"""A Chain Agnostic AccountId"""
+scalar ChainAgnosticAccountID @specifiedBy(url: "https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-10.md")
+
+"""A connection to a list of items."""
+type DaoProfileRelationConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [DaoProfileRelationEdge]
+}
+
+"""An edge in a connection."""
+type DaoProfileRelationEdge {
+  """The item at the end of the edge"""
+  node: DaoProfileRelation
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type DaoProfileRelation implements Node {
+  id: ID!
+  daoID: CeramicStreamID!
+  nabuID: CeramicStreamID!
+  dao: DAO
+  nabu: NabuProfileAlpha
+}
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#streamid")
+
+type NabuProfileAlpha implements Node {
+  id: ID!
+  userDID: CeramicAccount!
+  addressList: [ChainAgnosticAccountID]
+  displayName: String!
+  accountCreated: DateTime!
+  socialNetworks: [NabuProfileAlphaSocialNetworkInfo]
+  daoList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+  ): DaoProfileRelationConnection!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+type NabuProfileAlphaSocialNetworkInfo {
+  url: String
+  network: String!
+  username: String!
+}
+
+"""A connection to a list of items."""
+type NabuProfileAlphaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [NabuProfileAlphaEdge]
+}
+
+"""An edge in a connection."""
+type NabuProfileAlphaEdge {
+  """The item at the end of the edge"""
+  node: NabuProfileAlpha
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Mutation {
+  createDAO(input: CreateDAOInput!): CreateDAOPayload
+  updateDAO(input: UpdateDAOInput!): UpdateDAOPayload
+  createNabuProfileAlpha(input: CreateNabuProfileAlphaInput!): CreateNabuProfileAlphaPayload
+  updateNabuProfileAlpha(input: UpdateNabuProfileAlphaInput!): UpdateNabuProfileAlphaPayload
+  createDaoProfileRelation(input: CreateDaoProfileRelationInput!): CreateDaoProfileRelationPayload
+  updateDaoProfileRelation(input: UpdateDaoProfileRelationInput!): UpdateDaoProfileRelationPayload
+}
+
+type CreateDAOPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: DAO!
+  clientMutationId: String
+}
+
+input CreateDAOInput {
+  content: DAOInput!
+  clientMutationId: String
+}
+
+input DAOInput {
+  url: String
+  name: String!
+  chain: ChainAgnosticChainID!
+  roles: [String]
+  token: ChainAgnosticAccountID!
+  creator: DID!
+  createdAt: DateTime!
+  description: String!
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+type UpdateDAOPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: DAO!
+  clientMutationId: String
+}
+
+input UpdateDAOInput {
+  id: ID!
+  content: PartialDAOInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialDAOInput {
+  url: String
+  name: String
+  chain: ChainAgnosticChainID
+  roles: [String]
+  token: ChainAgnosticAccountID
+  creator: DID
+  createdAt: DateTime
+  description: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
+}
+
+"""A Ceramic Commit ID"""
+scalar CeramicCommitID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid")
+
+type CreateNabuProfileAlphaPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: NabuProfileAlpha!
+  clientMutationId: String
+}
+
+input CreateNabuProfileAlphaInput {
+  content: NabuProfileAlphaInput!
+  clientMutationId: String
+}
+
+input NabuProfileAlphaInput {
+  userDID: DID!
+  addressList: [ChainAgnosticAccountID]
+  displayName: String!
+  accountCreated: DateTime!
+  socialNetworks: [NabuProfileAlphaSocialNetworkInfoInput]
+}
+
+input NabuProfileAlphaSocialNetworkInfoInput {
+  url: String
+  network: String!
+  username: String!
+}
+
+type UpdateNabuProfileAlphaPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: NabuProfileAlpha!
+  clientMutationId: String
+}
+
+input UpdateNabuProfileAlphaInput {
+  id: ID!
+  content: PartialNabuProfileAlphaInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialNabuProfileAlphaInput {
+  userDID: DID
+  addressList: [ChainAgnosticAccountID]
+  displayName: String
+  accountCreated: DateTime
+  socialNetworks: [NabuProfileAlphaSocialNetworkInfoInput]
+}
+
+type CreateDaoProfileRelationPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: DaoProfileRelation!
+  clientMutationId: String
+}
+
+input CreateDaoProfileRelationInput {
+  content: DaoProfileRelationInput!
+  clientMutationId: String
+}
+
+input DaoProfileRelationInput {
+  daoID: CeramicStreamID!
+  nabuID: CeramicStreamID!
+}
+
+type UpdateDaoProfileRelationPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: DaoProfileRelation!
+  clientMutationId: String
+}
+
+input UpdateDaoProfileRelationInput {
+  id: ID!
+  content: PartialDaoProfileRelationInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialDaoProfileRelationInput {
+  daoID: CeramicStreamID
+  nabuID: CeramicStreamID
+}
