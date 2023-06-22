@@ -29,11 +29,13 @@ const test = async () => {
   await client
     .mutate({
       mutation: gql`
-        mutation createNabuProfileAlpha($i: CreateNabuProfileAlphaInput) {
-          CreateNabuProfileAlpha(input: $i) {
+        mutation createNabuProfileAlpha($i: CreateNabuProfileAlphaInput!) {
+          createNabuProfileAlpha(input: $i) {
             document {
               id
-              userDID
+              userDID {
+                id
+              }
               displayName
               accountCreated
             }
@@ -41,10 +43,12 @@ const test = async () => {
         }
       `,
       variables: {
-        content: {
-          userDID: did,
-          displayName: "testName1",
-          accountCreated: new Date(),
+        i: {
+          content: {
+            userDID: did.id,
+            displayName: "testName1",
+            accountCreated: new Date().toISOString(),
+          },
         },
       },
     })
