@@ -1,16 +1,16 @@
 import { ComposeClient } from "@composedb/client";
 import { DID } from "dids";
 import { Ed25519Provider } from "key-did-provider-ed25519";
-import constants from "../src/constants/index.js";
-import { definition } from "../src/composites/daoProfile_runtime.js";
+import constants from "../constants/index.js";
+import { definition } from "../composites/daoProfile_runtime.js";
 import { getResolver } from "key-did-resolver";
 import pkg from "@apollo/client";
 import { readFileSync } from "fs";
+const { ApolloClient, ApolloLink, InMemoryCache, Observable } = pkg;
 
-const typeDefs = readFileSync("tests/schemas/daoProfileSchema.graphql", {
+const typeDefs = readFileSync("src/schemas/daoProfileSchema.graphql", {
   encoding: "utf-8",
 });
-const { ApolloClient, ApolloLink, InMemoryCache, Observable } = pkg;
 
 const compose = new ComposeClient({
   ceramic: "http://localhost:7007",
