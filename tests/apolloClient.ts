@@ -5,6 +5,11 @@ import constants from "../src/constants/index.js";
 import { definition } from "../src/composites/daoProfile_runtime.js";
 import { getResolver } from "key-did-resolver";
 import pkg from "@apollo/client";
+import { readFileSync } from "fs";
+
+const typeDefs = readFileSync("tests/schemas/daoProfileSchema.graphql", {
+  encoding: "utf-8",
+});
 const { ApolloClient, ApolloLink, InMemoryCache, Observable } = pkg;
 
 const compose = new ComposeClient({
@@ -52,6 +57,5 @@ const link = new ApolloLink((operation) => {
 });
 
 // Use ApolloLink instance in ApolloClient config
-const client = new ApolloClient({ cache: new InMemoryCache(), link });
-console.log({ client, did: compose.did });
+const client = new ApolloClient({ cache: new InMemoryCache(), link, typeDefs });
 export default client;
