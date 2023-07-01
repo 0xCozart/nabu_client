@@ -37,9 +37,7 @@ const authenticateDID = async (seed: string) => {
 //
 
 const did = await authenticateDID(constants.seed);
-if (did) {
-  compose.setDID(did);
-}
+if (did) compose.setDID(did);
 
 // Create custom ApolloLink using ComposeClient instance to execute operations
 const link = new ApolloLink((operation) => {

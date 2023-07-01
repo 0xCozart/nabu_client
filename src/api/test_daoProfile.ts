@@ -25,7 +25,7 @@ const test = async () => {
   };
   const did = await authenticateDID(constants.seed);
   if (!did) throw new Error("did is undefined");
-
+  console.log({ id: did.id });
   await client
     .mutate({
       mutation: gql`
@@ -45,7 +45,7 @@ const test = async () => {
       variables: {
         i: {
           content: {
-            userDID: did.id,
+            userDID: "did:key:z6MkjfFcCdV5ph6i4BUSrb2gsq6ZuhEr7Vpff2TioLUYVSiD",
             displayName: "testName1",
             accountCreated: new Date().toISOString(),
           },
