@@ -6,7 +6,7 @@ import { getResolver } from "key-did-resolver";
 import pkg from "@apollo/client";
 const { gql } = pkg;
 
-const test = async () => {
+export const CeramicAuth = async () => {
   // auth did
   const seedToUint8Array = (seed: string) => {
     const buffer = Buffer.from(seed, "hex");
@@ -56,5 +56,3 @@ const test = async () => {
       console.log({ value });
     });
 };
-
-void test();
