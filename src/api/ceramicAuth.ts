@@ -1,6 +1,5 @@
 import { DID } from "dids";
 import { Ed25519Provider } from "key-did-provider-ed25519";
-import client from "./client";
 import constants from "../constants";
 import { getResolver } from "key-did-resolver";
 import pkg from "@apollo/client";
@@ -26,33 +25,34 @@ export const CeramicAuth = async () => {
   const did = await authenticateDID(constants.seed);
   if (!did) throw new Error("did is undefined");
   console.log({ id: did.id });
-  await client
-    .mutate({
-      mutation: gql`
-        mutation createNabuProfileAlpha($i: CreateNabuProfileAlphaInput!) {
-          createNabuProfileAlpha(input: $i) {
-            document {
-              id
-              userDID {
-                id
-              }
-              displayName
-              accountCreated
-            }
-          }
-        }
-      `,
-      variables: {
-        i: {
-          content: {
-            userDID: "did:key:z6MkjfFcCdV5ph6i4BUSrb2gsq6ZuhEr7Vpff2TioLUYVSiD",
-            displayName: "testName1",
-            accountCreated: new Date().toISOString(),
-          },
-        },
-      },
-    })
-    .then((value) => {
-      console.log({ value });
-    });
+  return did;
+  // await client
+  //   .mutate({
+  //     mutation: gql`
+  //       mutation createNabuProfileAlpha($i: CreateNabuProfileAlphaInput!) {
+  //         createNabuProfileAlpha(input: $i) {
+  //           document {
+  //             id
+  //             userDID {
+  //               id
+  //             }
+  //             displayName
+  //             accountCreated
+  //           }
+  //         }
+  //       }
+  //     `,
+  //     variables: {
+  //       i: {
+  //         content: {
+  //           userDID: "did:key:z6MkjfFcCdV5ph6i4BUSrb2gsq6ZuhEr7Vpff2TioLUYVSiD",
+  //           displayName: "testName1",
+  //           accountCreated: new Date().toISOString(),
+  //         },
+  //       },
+  //     },
+  //   })
+  //   .then((value) => {
+  //     console.log({ value });
+  //   });
 };
