@@ -2,8 +2,8 @@ import { DID } from "dids";
 import { Ed25519Provider } from "key-did-provider-ed25519";
 import constants from "../constants";
 import { getResolver } from "key-did-resolver";
-import pkg from "@apollo/client";
-const { gql } = pkg;
+// import pkg from "@apollo/client";
+// const { gql } = pkg;
 
 export const CeramicAuth = async () => {
   // auth did

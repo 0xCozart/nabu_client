@@ -2,7 +2,7 @@ import { ComposeClient } from "@composedb/client";
 import { DID } from "dids";
 import { Ed25519Provider } from "key-did-provider-ed25519";
 import constants from "../constants/index.js";
-import { definition } from "../composites/daoProfile_runtime.js";
+import { definition } from "../composites/runtime";
 import { getResolver } from "key-did-resolver";
 import pkg from "@apollo/client";
 import { readFileSync } from "fs";
