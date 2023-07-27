@@ -1,8 +1,8 @@
 import { ComposeClient } from "@composedb/client";
 import { DID } from "dids";
 import { Ed25519Provider } from "key-did-provider-ed25519";
-import constants from "../constants/index.js";
-import { definition } from "../composites/runtime";
+import { definition } from "../../composites/runtime";
+import { env } from "../../constants";
 import { getResolver } from "key-did-resolver";
 import pkg from "@apollo/client";
 import { readFileSync } from "fs";
@@ -36,7 +36,7 @@ const authenticateDID = async (seed: string) => {
 
 //
 
-const did = await authenticateDID(constants.seed);
+const did = await authenticateDID(env.NEXT_PUBLIC_ED25519_SEED);
 if (did) compose.setDID(did);
 
 // Create custom ApolloLink using ComposeClient instance to execute operations

@@ -23,9 +23,9 @@ const env = envSchema.parse(process.env);
 
 export { env };
 
-const constants = {
-  publicDID: process.env.NEXT_PUBLIC_DID || "",
-  seed: process.env.ED25519_SEED || "",
-};
+// const constants = {
+//   publicDID: process.env.NEXT_PUBLIC_DID || "",
+//   seed: process.env.ED25519_SEED || "",
+// };
 
-export default constants;
+// export default constants;
