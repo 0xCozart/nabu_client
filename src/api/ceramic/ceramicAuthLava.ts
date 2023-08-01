@@ -1,14 +1,11 @@
 // import pkg from "@apollo/client";
 // const { gql } = pkg;
 
-import { env } from "../../constants";
 import { ethers } from "ethers";
 
 export const CeramicAuthLava = async () => {
   // eslint-disable-next-line
-  const ethProvider = await new ethers.providers.StaticJsonRpcProvider(
-    env.NEXT_PUBLIC_LAVA_GATEWAY
-  );
+  const ethProvider = await new ethers.providers.Web3Provider(window.ethereum);
   // console.log({ ethProvider });
   const signer = ethProvider.getSigner();
   console.log({ signer: signer.getAddress() });
