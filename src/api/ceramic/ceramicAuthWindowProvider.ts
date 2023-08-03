@@ -3,14 +3,15 @@
 
 import { ethers } from "ethers";
 
-export const CeramicAuthLava = async () => {
+export const CeramicAuthWindowProvider = async () => {
   // eslint-disable-next-line
   const ethProvider = await new ethers.providers.Web3Provider(window.ethereum);
   // console.log({ ethProvider });
   const signer = ethProvider.getSigner();
   console.log({ signer: signer.getAddress() });
 };
-void CeramicAuthLava();
+
+
 // export const CeramicAuth = async () => {
 // eslint-disable-next-line
 // const lavasdk = await new sdk.LavaSDK({

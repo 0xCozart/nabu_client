@@ -1,7 +1,7 @@
 import { ComposeClient } from "@composedb/client";
 import { DID } from "dids";
 import { Ed25519Provider } from "key-did-provider-ed25519";
-import { definition } from "../../composites/runtime";
+import { definition } from "./runtime";
 import { env } from "../../constants";
 import { getResolver } from "key-did-resolver";
 import pkg from "@apollo/client";
