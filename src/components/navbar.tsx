@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 
 import Image from "next/image";
 import { CeramicAuthWindowProvider } from "../api/ceramic/ceramicAuthWindowProvider";
@@ -7,6 +7,7 @@ const Navbar = () => {
   const [signer, setSigner] = useState<unknown>();
   const executeAuth = async () => {
     const signer = await CeramicAuthWindowProvider();
+    console.log({ signer });
     setSigner(signer);
   };
 
@@ -14,10 +15,6 @@ const Navbar = () => {
     e.preventDefault();
     await executeAuth();
   };
-
-  useEffect(() => {
-    console.log(signer);
-  });
 
   return (
     <div>
@@ -28,6 +25,8 @@ const Navbar = () => {
               src="https://flowbite.com/docs/images/logo.svg"
               className="mr-3 h-8"
               alt="Flowbite Logo"
+              width={100}
+              height={100}
             />
             <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
               Flowbite
@@ -58,9 +57,9 @@ const Navbar = () => {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M1 1h15M1 7h15M1 13h15"
                 />
               </svg>
