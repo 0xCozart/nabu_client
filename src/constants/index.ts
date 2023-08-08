@@ -18,6 +18,7 @@ const envSchema = z.object({
   NEXT_PUBLIC_LAVA_BADGE_ADDRESS: z.string().nonempty(),
   NEXT_PUBLIC_LAVA_PROJECT_ID: z.string().nonempty(),
   NEXT_PUBLIC_LAVA_GATEWAY: z.string().nonempty(),
+  NEXT_PUBLIC_CERAMIC_URL: z.string().nonempty(),
 });
 
 const env = envSchema.parse(process.env);
