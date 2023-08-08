@@ -59,7 +59,11 @@ const composeApolloClient = async () => {
       });
     });
 
-    return new ApolloClient({ cache: new InMemoryCache(), link });
+    return new ApolloClient({
+      cache: new InMemoryCache(),
+      link,
+      connectToDevTools: true,
+    });
   } catch (error) {
     console.error("compose/apollo auth error: ", error);
   }

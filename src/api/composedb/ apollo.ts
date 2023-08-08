@@ -55,5 +55,10 @@ const link = new ApolloLink((operation) => {
 });
 
 // Use ApolloLink instance in ApolloClient config
-const client = new ApolloClient({ cache: new InMemoryCache(), link, typeDefs });
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link,
+  typeDefs,
+  connectToDevTools: true,
+});
 export default client;
