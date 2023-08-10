@@ -1,17 +1,16 @@
-import { CeramicAuthWindowProvider } from "../api/ceramic/ceramicAuthWindowProvider";
 import Image from "next/image";
 import { useState } from "react";
 
 const Navbar = () => {
   const [signer, setSigner] = useState<unknown>();
-  const executeAuth = async () => {
-    const signer = await CeramicAuthWindowProvider();
-    console.log({ signer });
-    setSigner(signer);
-  };
+  // const executeAuth = async () => {
+  //   const signer = await CeramicAuthWindowProvider();
+  //   console.log({ signer });
+  //   setSigner(signer);
+  // };
 
   const handleClick = () => {
-    void executeAuth();
+    // void executeAuth();
   };
 
   return (
