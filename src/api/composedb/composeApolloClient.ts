@@ -22,10 +22,11 @@ export const ethWindowProvider = async () => {
   return { provider, signer };
 };
 
-const composeApolloClient = async () => {
+const composeApolloClient = async ({
+  provider,
+}: Awaited<ReturnType<typeof ethWindowProvider>>) => {
   try {
     // Prompt injected provider (metamask or another client wallet with injected provider) for connection to Nabu
-    const { provider } = await ethWindowProvider();
     const [address] = await provider.getSigner().getAddress();
     if (!address) throw Error("no signer address found");
 
